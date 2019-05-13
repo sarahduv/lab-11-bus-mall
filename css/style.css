@@ -1,0 +1,34 @@
+img {
+    width: 200px;
+    margin-right: 20px;
+}
+
+#imageBlock {
+    background-color: rgb(190, 190, 233);
+    width: 680px;
+    height: 400px;
+    padding-left: 20px;
+    position: absolute;
+}
+
+#imageTitle {
+    font-size: 35px;
+}
+
+#imageContainer {
+    position: absolute;
+    bottom: 0;
+}
+
+#imageSelectionOne {
+    border: 2px solid black;
+}
+
+#imageSelectionTwo {
+    border: 2px solid black;
+}
+
+#imageSelectionThree {
+    border: 2px solid black;
+}
+
