@@ -12,6 +12,9 @@ var maxClicks = 25;
 var totalClicks = 0;
 var imageUsed = [1, 2, 3, 4, 5, 6];
 var showingList = false;
+var nameArray = [];
+var voteArray =[];
+var finalChart;
 
 
 // Constructor
@@ -21,6 +24,7 @@ function ItemImage(name){
   this.timesShown = 0;
   this.timesSelected = 0;
   imageArray.push(this);
+  
 }
 
 // New Instances
@@ -46,24 +50,102 @@ new ItemImage('water-can');
 new ItemImage('wine-glass');
 
 // Function to append list to the DOM
-function makeList() {
-  if (!showingList) {
+// function makeList() {
+//   if (!showingList) {
 
-    var ulEl = document.createElement('ul');
+//     var ulEl = document.createElement('ul');
 
-    for (var i=0; i<imageArray.length; i++){
-      var liEl = document.createElement('li');
-      liEl.textContent = imageArray[i].name + ' was clicked ' + imageArray[i].timesSelected + ' times';
-      ulEl.appendChild(liEl);
+//     for (var i=0; i<imageArray.length; i++){
+//       var liEl = document.createElement('li');
+//       liEl.textContent = imageArray[i].name + ' was clicked ' + imageArray[i].timesSelected + ' times';
+//       ulEl.appendChild(liEl);
+//     }
+
+//     listOfData.appendChild(ulEl);
+//     showingList = true;
+
+//     imageSelectionOne.removeEventListener('click', handleImageSelection);
+//     imageSelectionTwo.removeEventListener('click', handleImageSelection);
+//     imageSelectionThree.removeEventListener('click', handleImageSelection);
+//   }
+// }
+
+// CHART data and fucntion
+
+var data = {
+  labels: nameArray,
+  datasets: [{
+    label: 'Results',
+    data: voteArray,
+    backgroundColor: [
+      'blue',
+      'darkgray',
+      'lightpurple',
+      'lightblue',
+      'navy',
+      'blue',
+      'darkgray',
+      'lightpurple',
+      'lightblue',
+      'navy',
+      'blue',
+      'darkgray',
+      'lightpurple',
+      'lightblue',
+      'navy',
+      'blue',
+      'darkgray',
+      'lightpurple'
+    ],
+    hoverBackgroundColor: [
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple'
+    ]
+  }]
+};
+
+function drawChart() {
+  var ctx = document.getElementById('voting-chart').getContext('2d');
+  finalChart = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: {
+      responsive: false,
+      animation: {
+        duration: 2000,
+        easing: 'easeOutElastic'
+      }
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          max: 10,
+          min: 0,
+          stepSize: 1.0
+        }
+      }]
     }
+  });
 
-    listOfData.appendChild(ulEl);
-    showingList = true;
-
-    imageSelectionOne.removeEventListener('click', handleImageSelection);
-    imageSelectionTwo.removeEventListener('click', handleImageSelection);
-    imageSelectionThree.removeEventListener('click', handleImageSelection);
-  }
+  imageSelectionOne.removeEventListener('click', handleImageSelection);
+  imageSelectionTwo.removeEventListener('click', handleImageSelection);
+  imageSelectionThree.removeEventListener('click', handleImageSelection);
 }
 
 
@@ -89,6 +171,13 @@ function showRandomImage(socketEl){
   imageUsed.push(randomIndex);
 }
 
+function chartData(){
+  for (var i=0; i<imageArray.length; i++){
+    nameArray.push(imageArray[i].name);
+    voteArray.push(imageArray[i].timesSelected);
+  }
+}
+
 
 // Event handler
 function handleImageSelection(event){
@@ -106,10 +195,10 @@ function handleImageSelection(event){
     showRandomImage(imageSelectionTwo);
     showRandomImage(imageSelectionThree);
   } else {
-    makeList();
+    chartData();
+    drawChart();
   }
 }
-
 
 // Event listener
 imageSelectionOne.addEventListener('click', handleImageSelection);
