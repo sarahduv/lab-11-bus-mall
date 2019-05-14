@@ -1,0 +1,37 @@
+img {
+    width: 200px;
+    margin-right: 20px;
+}
+
+body {
+    background-image: url('../img/sepiaBus.jpg');
+    background-repeat: repeat-y;
+    background-color: white;
+    background-size: 1525px;
+}
+
+#imageBlock {
+    background-color: rgb(228, 228, 231, 0.5);
+    width: 680px;
+    height: 400px;
+    padding-left: 20px;
+    text-align: center;
+}
+
+#imageTitle {
+    font-size: 35px;
+}
+
+#imageContainer {
+    bottom: 0;
+}
+
+.imageGroup {
+    border: 2px solid black;
+    vertical-align: middle;
+}
+
+#imageGroupContainer {
+    height:300px;
+}
+
