@@ -1,16 +1,17 @@
 
 // Global variables
 
-var imageContainer = document.getElementById('imageContainer');
 var imageSelectionOne = document.getElementById('imageSelectionOne');
 var imageSelectionTwo = document.getElementById('imageSelectionTwo');
 var imageSelectionThree = document.getElementById('imageSelectionThree');
+var listOfData = document.getElementById('listOfData');
+
 
 var imageArray=[];
 var maxClicks = 25;
 var totalClicks = 0;
-var usedBefore = ['place', 'holder', 'fornow'];
-
+var imageUsed = [1, 2, 3, 4, 5, 6];
+var showingList = false;
 
 
 // Constructor
@@ -44,24 +45,53 @@ new ItemImage('unicorn');
 new ItemImage('water-can');
 new ItemImage('wine-glass');
 
+// Function to append list to the DOM
+function makeList() {
+  if (!showingList) {
 
-// For Number ONE
-//function to pull in src and alts, and to show random image
-function showRandomImageOne(){
-  // generate a random number 0-7
-  var randomIndex = Math.floor(Math.random() * imageArray.length);
-  // assign src
-  imageSelectionOne.src = imageArray[randomIndex].filepath;
-  // assign title
-  imageSelectionOne.title = imageArray[randomIndex].name;
-  // assign the alt
-  imageSelectionOne.alt = imageArray[randomIndex].name;
-  // increment times shown
-  imageArray[randomIndex].timesShown++;
+    var ulEl = document.createElement('ul');
+
+    for (var i=0; i<imageArray.length; i++){
+      var liEl = document.createElement('li');
+      liEl.textContent = imageArray[i].name + ' was clicked ' + imageArray[i].timesSelected + ' times';
+      ulEl.appendChild(liEl);
+    }
+
+    listOfData.appendChild(ulEl);
+    showingList = true;
+
+    imageSelectionOne.removeEventListener('click', handleImageSelection);
+    imageSelectionTwo.removeEventListener('click', handleImageSelection);
+    imageSelectionThree.removeEventListener('click', handleImageSelection);
+  }
 }
 
-// Event handler number One
-function handleImageSelectionOne(event){
+
+
+
+// Displays images
+function showRandomImage(socketEl){
+  // generate a random number 0-7
+  var randomIndex = Math.floor(Math.random() * imageArray.length);
+  while (imageUsed.includes(randomIndex)){
+    randomIndex = Math.floor(Math.random() * imageArray.length);
+  }
+  // assign src
+  socketEl.src = imageArray[randomIndex].filepath;
+  // assign title
+  socketEl.title = imageArray[randomIndex].name;
+  // assign the alt
+  socketEl.alt = imageArray[randomIndex].name;
+  // increment times shown
+  imageArray[randomIndex].timesShown++;
+  // Replaces items in used image array
+  imageUsed.shift();
+  imageUsed.push(randomIndex);
+}
+
+
+// Event handler
+function handleImageSelection(event){
   console.log(event.target.alt);
   totalClicks++;
 
@@ -71,79 +101,25 @@ function handleImageSelectionOne(event){
     }
   }
 
-  showRandomImageOne();
-  showRandomImageTwo();
-  showRandomImageThree();
-
+  if (totalClicks < maxClicks) {
+    showRandomImage(imageSelectionOne);
+    showRandomImage(imageSelectionTwo);
+    showRandomImage(imageSelectionThree);
+  } else {
+    makeList();
+  }
 }
-
-
-// For number TWO
-//function to pull in src and alts, and to show random image
-function showRandomImageTwo(){
-  // generate a random number 0-7
-  var randomIndex = Math.floor(Math.random() * imageArray.length);
-  // assign src
-  imageSelectionTwo.src = imageArray[randomIndex].filepath;
-  // assign title
-  imageSelectionTwo.title = imageArray[randomIndex].name;
-  // assign the alt
-  imageSelectionTwo.alt = imageArray[randomIndex].name;
-  // increment times shown
-  imageArray[randomIndex].timesShown++;
-  
-
-}
-
-// Event handler for TWO
-function handleImageSelectionTwo(event){
-  console.log(event.target);
-  totalClicks++;
-  showRandomImageOne();
-  showRandomImageTwo();
-  showRandomImageThree();
-}
-
-
-// For number THREE
-//function to pull in src and alts, and to show random image
-function showRandomImageThree(){
-  // generate a random number 0-7
-  var randomIndex = Math.floor(Math.random() * imageArray.length);
-  // assign src
-  imageSelectionThree.src = imageArray[randomIndex].filepath;
-  // assign title
-  imageSelectionThree.title = imageArray[randomIndex].name;
-  // assign the alt
-  imageSelectionThree.alt = imageArray[randomIndex].name;
-  // increment times shown
-  imageArray[randomIndex].timesShown++;
-}
-
-// Event handler
-function handleImageSelectionThree(event){
-  // imageArray[name].timesSelected++;
-  console.log(event.target);
-  totalClicks++;
-  showRandomImageOne();
-  showRandomImageTwo();
-  showRandomImageThree();
-}
-
-
 
 
 // Event listener
-imageSelectionOne.addEventListener('click', handleImageSelectionOne);
-
-imageSelectionTwo.addEventListener('click', handleImageSelectionTwo);
-
-imageSelectionThree.addEventListener('click', handleImageSelectionThree);
+imageSelectionOne.addEventListener('click', handleImageSelection);
+imageSelectionTwo.addEventListener('click', handleImageSelection);
+imageSelectionThree.addEventListener('click', handleImageSelection);
 
 
 // Function Calls
-showRandomImageOne();
-showRandomImageTwo();
-showRandomImageThree();
+showRandomImage(imageSelectionOne);
+showRandomImage(imageSelectionTwo);
+showRandomImage(imageSelectionThree);
 
 

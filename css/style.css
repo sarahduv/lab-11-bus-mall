@@ -3,12 +3,19 @@ img {
     margin-right: 20px;
 }
 
+body {
+    background-image: url('../img/sepiaBus.jpg');
+    background-repeat: repeat-y;
+    background-color: white;
+    background-size: 1525px;
+}
+
 #imageBlock {
-    background-color: rgb(190, 190, 233);
+    background-color: rgb(228, 228, 231, 0.5);
     width: 680px;
     height: 400px;
     padding-left: 20px;
-    position: absolute;
+    text-align: center;
 }
 
 #imageTitle {
@@ -16,19 +23,15 @@ img {
 }
 
 #imageContainer {
-    position: absolute;
     bottom: 0;
 }
 
-#imageSelectionOne {
+.imageGroup {
     border: 2px solid black;
+    vertical-align: middle;
 }
 
-#imageSelectionTwo {
-    border: 2px solid black;
-}
-
-#imageSelectionThree {
-    border: 2px solid black;
+#imageGroupContainer {
+    height:300px;
 }
 
