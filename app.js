@@ -49,27 +49,6 @@ new ItemImage('unicorn');
 new ItemImage('water-can');
 new ItemImage('wine-glass');
 
-// Function to append list to the DOM
-// function makeList() {
-//   if (!showingList) {
-
-//     var ulEl = document.createElement('ul');
-
-//     for (var i=0; i<imageArray.length; i++){
-//       var liEl = document.createElement('li');
-//       liEl.textContent = imageArray[i].name + ' was clicked ' + imageArray[i].timesSelected + ' times';
-//       ulEl.appendChild(liEl);
-//     }
-
-//     listOfData.appendChild(ulEl);
-//     showingList = true;
-
-//     imageSelectionOne.removeEventListener('click', handleImageSelection);
-//     imageSelectionTwo.removeEventListener('click', handleImageSelection);
-//     imageSelectionThree.removeEventListener('click', handleImageSelection);
-//   }
-// }
-
 // CHART data and fucntion
 
 var data = {
@@ -148,7 +127,27 @@ function drawChart() {
   imageSelectionThree.removeEventListener('click', handleImageSelection);
 }
 
+// Checking to see if there is local storage
+function checkLocalStorage(){
+  if (localStorage.imageArrayStorage) {
+    var retrievedImageArrayStorage = localStorage.getItem('imageArrayStorage');
+    var parsedImageArrayStorage = JSON.parse(retrievedImageArrayStorage);
+    imageArray = parsedImageArrayStorage;
+    showRandomImage(imageSelectionOne);
+    showRandomImage(imageSelectionTwo);
+    showRandomImage(imageSelectionThree);
+  } else {
+    showRandomImage(imageSelectionOne);
+    showRandomImage(imageSelectionTwo);
+    showRandomImage(imageSelectionThree);
+  }
+}
 
+// Creating local storage
+function createLocalStorage(){
+  var stringifiedImageArray = JSON.stringify(imageArray);
+  localStorage.setItem('imageArrayStorage', stringifiedImageArray);
+}
 
 
 // Displays images
@@ -197,6 +196,7 @@ function handleImageSelection(event){
   } else {
     chartData();
     drawChart();
+    createLocalStorage();
   }
 }
 
@@ -207,8 +207,9 @@ imageSelectionThree.addEventListener('click', handleImageSelection);
 
 
 // Function Calls
-showRandomImage(imageSelectionOne);
-showRandomImage(imageSelectionTwo);
-showRandomImage(imageSelectionThree);
+// showRandomImage(imageSelectionOne);
+// showRandomImage(imageSelectionTwo);
+// showRandomImage(imageSelectionThree);
+checkLocalStorage();
 
 
